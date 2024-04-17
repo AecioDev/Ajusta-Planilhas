@@ -59,7 +59,7 @@ namespace Ajusta_Planilhas
             try
             {
                 using (ExcelPackage package = new ExcelPackage())
-                {                    
+                {
                     for (int mes = 1; mes <= 12; mes++)
                     {
                         // Adiciona uma nova planilha para cada mês
@@ -159,7 +159,7 @@ namespace Ajusta_Planilhas
 
                             //Garante que é uma planilha de Sócio
                             if (valida01.ToUpper().Equals("DESPESAS") && valida02.ToUpper().Equals("RECEITAS"))
-                            {
+                        {
                                 var planilhaDest = $"=[" + arqSocio + "]" + nomeMes;
 
                                 worksheet.Cells[lin, 1].Value = NomeSocio; //"Sócio";
@@ -170,13 +170,13 @@ namespace Ajusta_Planilhas
                                 worksheet.Cells[lin, 6].Formula = planilhaDest + "!$E$20";  //"Sócio Ganhou";
                                 worksheet.Cells[lin, 7].Formula = planilhaDest + "!$E$19";  //"Firma Ganhou";
                                 lin++; //Vai para o próximo Sócio
-                            }
+                        }
 
                         }
 
                         // Formata os Valores
                         for (int linha = 5; linha < lin; linha++)
-                        {                            
+                        {
                             worksheet.Cells[linha, 1].Style.Numberformat.Format = "_($* #,##0.00_);_($* (#,##0.00);_($* \"-\"??_);_(@_)";
                             worksheet.Cells[linha, 2].Style.Numberformat.Format = "_($* #,##0.00_);_($* (#,##0.00);_($* \"-\"??_);_(@_)";
                             worksheet.Cells[linha, 3].Style.Numberformat.Format = "_($* #,##0.00_);_($* (#,##0.00);_($* \"-\"??_);_(@_)";
@@ -214,7 +214,46 @@ namespace Ajusta_Planilhas
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            
+            //try
+            //{                
+            //    listaPlanilhas = Directory.GetFiles(pastaPadrao).ToList();
+                                
+            //    foreach (string arquivo in listaPlanilhas)
+            //    {
+            //        // Carrega o arquivo Excel
+            //        FileInfo fileInfo = new FileInfo(arquivo);
+
+                   
+
+            //        using (ExcelPackage package = new ExcelPackage(fileInfo))
+            //        {
+            //            foreach (var worksheet in package.Workbook.Worksheets)
+            //            {                            
+            //                if (worksheet.Name == "Janeiro")
+            //                {                                
+            //                    var valida01 = worksheet.Cells["A13"].Value;    //Tem q Ser DESPESAS
+            //                    var valida02 = worksheet.Cells["C11"].Value;    //Tem q Ser RECEITAS
+
+            //                }
+            //                else
+            //                {
+            //                    // Atualiza a fórmula na célula B2 para referenciar a célula B2
+            //                    // da planilha de Janeiro nas demais planilhas
+            //                    worksheet.Cells["B2"].Formula = $"='Janeiro'! B2";
+            //                }
+
+            //            }
+
+            //            // Salva o arquivo
+            //            package.Save();
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show($"Erro ao listar arquivos: {ex.Message}", "Atenção!!!",
+            //    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //}
 
             //MessageBox.Show("Nome do sócio alterado com sucesso!!!", "Atenção!!!",
             //    MessageBoxButtons.OK, MessageBoxIcon.Information);
