@@ -141,17 +141,32 @@ namespace Ajusta_Planilhas
                             string valida01 = "";
                             string valida02 = "";
                             string NomeSocio = "";
+                            string NomeArqSocio = "";
 
                             // Carrega o arquivo Excel
                             FileInfo fileSocio = new FileInfo(arqSocio);
-                            
+
+                            NomeArqSocio = fileSocio.Name;
+
                             using (ExcelPackage packageSocios = new ExcelPackage(fileSocio))
                             {
                                 // Busca os Dados do Sócio
-                                var wksocios = packageSocios.Workbook.Worksheets["Janeiro"];                                   
-                                valida01 = wksocios.Cells["A13"].Value.ToString();    //Tem q Ser DESPESAS
-                                valida02 = wksocios.Cells["C11"].Value.ToString();    //Tem q Ser RECEITAS                                                                                        
-                                NomeSocio = wksocios.Cells["B2"].Value.ToString();
+                                var wksocios = packageSocios.Workbook.Worksheets["Janeiro"];
+
+                                if( wksocios.Cells["A13"].Value != null) 
+                                { 
+                                    valida01 = wksocios.Cells["A13"].Value.ToString();    //Tem q Ser DESPESAS
+                                }
+
+                                if (wksocios.Cells["C11"].Value != null)
+                                {
+                                    valida02 = wksocios.Cells["C11"].Value.ToString();    //Tem q Ser RECEITAS      
+                                }
+
+                                if (wksocios.Cells["B2"].Value != null)
+                                {
+                                    NomeSocio = wksocios.Cells["B2"].Value.ToString();
+                                }
 
                                 // Fecha o Sócio
                                 packageSocios.Dispose();
@@ -159,45 +174,48 @@ namespace Ajusta_Planilhas
 
                             //Garante que é uma planilha de Sócio
                             if (valida01.ToUpper().Equals("DESPESAS") && valida02.ToUpper().Equals("RECEITAS"))
-                        {
-                                var planilhaDest = $"=[" + arqSocio + "]" + nomeMes;
+                            {
+                                var planilhaDest = @$"='" + pastaPadrao + @"\[" + NomeArqSocio + "]" + nomeMes;
 
                                 worksheet.Cells[lin, 1].Value = NomeSocio; //"Sócio";
-                                worksheet.Cells[lin, 2].Formula = planilhaDest + "!$B$12";  //"Valor Total";
-                                worksheet.Cells[lin, 3].Formula = planilhaDest + "!$D$11";  //"Recebimento";
+                                worksheet.Cells[lin, 2].Formula = planilhaDest + "'!$B$12";  //"Valor Total";
+                                worksheet.Cells[lin, 3].Formula = planilhaDest + "'!$D$11";  //"Recebimento";
                                 worksheet.Cells[lin, 4].Formula = $"=IF(B{lin} > 0, C{lin}/B{lin}, 0)";  //"Percentual";
-                                worksheet.Cells[lin, 5].Formula = planilhaDest + "!$F$6";  //"Mercadorias Pagas";
-                                worksheet.Cells[lin, 6].Formula = planilhaDest + "!$E$20";  //"Sócio Ganhou";
-                                worksheet.Cells[lin, 7].Formula = planilhaDest + "!$E$19";  //"Firma Ganhou";
+                                worksheet.Cells[lin, 5].Formula = planilhaDest + "'!$F$6";  //"Mercadorias Pagas";
+                                worksheet.Cells[lin, 6].Formula = planilhaDest + "'!$E$20";  //"Sócio Ganhou";
+                                worksheet.Cells[lin, 7].Formula = planilhaDest + "'!$E$19";  //"Firma Ganhou";
                                 lin++; //Vai para o próximo Sócio
-                        }
+                            }
 
                         }
+                                                
+                        rangeHeader = worksheet.Cells[5, 1, lin, 7];
+                        rangeHeader.Style.Font.Size = 16;
+                        lin++;
+
+                        // Somatório
+                        worksheet.Cells[lin, 1].Value = "Total";
+                        worksheet.Cells[lin, 1].Style.Font.Bold = true;
+                        worksheet.Cells[lin, 2].Formula = $"=SUM(B5:B10)";
+                        worksheet.Cells[lin, 3].Formula = $"=SUM(C5:C10)";
+                        worksheet.Cells[lin, 4].Formula = $"=IF(B11 > 0, C11/B11, 0)";
+                        worksheet.Cells[lin, 5].Formula = $"=SUM(E5:E10)";
+                        worksheet.Cells[lin, 6].Formula = $"=SUM(F5:F10)";
+                        worksheet.Cells[lin, 7].Formula = $"=SUM(G5:G10)";
 
                         // Formata os Valores
                         for (int linha = 5; linha < lin; linha++)
                         {
-                            worksheet.Cells[linha, 1].Style.Numberformat.Format = "_($* #,##0.00_);_($* (#,##0.00);_($* \"-\"??_);_(@_)";
-                            worksheet.Cells[linha, 2].Style.Numberformat.Format = "_($* #,##0.00_);_($* (#,##0.00);_($* \"-\"??_);_(@_)";
-                            worksheet.Cells[linha, 3].Style.Numberformat.Format = "_($* #,##0.00_);_($* (#,##0.00);_($* \"-\"??_);_(@_)";
+                            worksheet.Cells[linha, 1].Style.Numberformat.Format = "_(R$* #,##0.00_);_($* (#,##0.00);_(R$* \"-\"??_);_(@_)";
+                            worksheet.Cells[linha, 2].Style.Numberformat.Format = "_(R$* #,##0.00_);_($* (#,##0.00);_(R$* \"-\"??_);_(@_)";
+                            worksheet.Cells[linha, 3].Style.Numberformat.Format = "_(R$* #,##0.00_);_($* (#,##0.00);_(R$* \"-\"??_);_(@_)";
                             worksheet.Cells[linha, 4].Style.Numberformat.Format = "0.00%";
-                            worksheet.Cells[linha, 5].Style.Numberformat.Format = "_($* #,##0.00_);_($* (#,##0.00);_($* \"-\"??_);_(@_)";
-                            worksheet.Cells[linha, 6].Style.Numberformat.Format = "_($* #,##0.00_);_($* (#,##0.00);_($* \"-\"??_);_(@_)";
-                            worksheet.Cells[linha, 7].Style.Numberformat.Format = "_($* #,##0.00_);_($* (#,##0.00);_($* \"-\"??_);_(@_)";
+                            worksheet.Cells[linha, 5].Style.Numberformat.Format = "_(R$* #,##0.00_);_($* (#,##0.00);_(R$* \"-\"??_);_(@_)";
+                            worksheet.Cells[linha, 6].Style.Numberformat.Format = "_(R$* #,##0.00_);_($* (#,##0.00);_(R$* \"-\"??_);_(@_)";
+                            worksheet.Cells[linha, 7].Style.Numberformat.Format = "_(R$* #,##0.00_);_($* (#,##0.00);_(R$* \"-\"??_);_(@_)";
                         }
 
-                        rangeHeader = worksheet.Cells[5, 1, lin, 7];
-                        rangeHeader.Style.Font.Size = 16;
 
-                        // Somatório
-                        worksheet.Cells["A11"].Value = "Total";
-                        worksheet.Cells["B11"].Formula = $"=SUM(B5:B10)";
-                        worksheet.Cells["C11"].Formula = $"=SUM(C5:C10)";
-                        worksheet.Cells["D11"].Formula = $"=IF(B11 > 0, C11/B11, 0)";
-                        worksheet.Cells["D11"].Style.Numberformat.Format = "0.00%";
-                        worksheet.Cells["E11"].Formula = $"=SUM(E5:E10)";
-                        worksheet.Cells["F11"].Formula = $"=SUM(F5:F10)";
-                        worksheet.Cells["G11"].Formula = $"=SUM(G5:G10)";
                     }
 
                     // Salva o arquivo
