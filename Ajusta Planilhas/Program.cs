@@ -1,4 +1,4 @@
-namespace Ajusta_Planilhas
+namespace Gestao_Planilhas
 {
     internal static class Program
     {
@@ -11,7 +11,7 @@ namespace Ajusta_Planilhas
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new Home());
+            Application.Run(new Acesso());
         }
     }
 }

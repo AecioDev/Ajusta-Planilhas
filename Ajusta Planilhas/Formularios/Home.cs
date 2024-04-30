@@ -1,74 +1,79 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Diagnostics;
+using Gestao_Planilhas.Classes.Dados.Repositorio;
+using Gestao_Planilhas.Classes.Dados;
+using Gestao_Planilhas.Classes.Processamento;
 
-namespace Ajusta_Planilhas
+namespace Gestao_Planilhas
 {
     public partial class Home : Form
     {
         private List<string> listaArquivos = new List<string>();
+        private int codEmp = 0;
+        private string PastaPadrao;
+        private Image LogoEmp;
+        private int EmpresaId;
 
         public Home()
         {
             InitializeComponent();
         }
 
-        private void bt_pastapadrao_Click(object sender, EventArgs e)
+        public Home(int _codEmp)
         {
-            var folderBrowserDialog = new FolderBrowserDialog();
-            DialogResult result = folderBrowserDialog.ShowDialog();
-            if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(folderBrowserDialog.SelectedPath))
+            InitializeComponent();
+            this.codEmp = _codEmp;
+        }
+
+        private void Home_Load(object sender, EventArgs e)
+        {
+            VerEmpresa(codEmp);
+
+            if(EmpresaId == 0)
             {
-                tb_pastapdrao.Text = folderBrowserDialog.SelectedPath;
+                MessageBox.Show("A Empresa Não foi cadastrada! Favor tentar novamente...", Utilitarios.msgCab,
+                   MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                string diretorio = tb_pastapdrao.Text;
-
-                try
-                {
-                    // Obtenha os nomes dos arquivos no diretório
-                    listaArquivos = Directory.GetFiles(diretorio).ToList();
-
-                    // Adicione os nomes dos arquivos ao CheckedListBox
-                    ct_ListaPlanilhas.Items.Clear();
-                    foreach (string arquivo in listaArquivos)
-                    {
-                        ct_ListaPlanilhas.Items.Add(Path.GetFileName(arquivo));
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Erro ao listar arquivos: {ex.Message}", "Atenção!!!",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-
+                this.Close();
             }
-            else
+
+            try
             {
-                MessageBox.Show("Nenhum diretório selecionado!!!", "Atenção!!!",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                // Obtenha os nomes dos arquivos no diretório
+                listaArquivos = Directory.GetFiles(PastaPadrao).ToList();
+
+                // Adicione os nomes dos arquivos ao CheckedListBox
+                ct_ListaPlanilhas.Items.Clear();
+                foreach (string arquivo in listaArquivos)
+                {
+                    ct_ListaPlanilhas.Items.Add(Path.GetFileName(arquivo));
+                }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao listar arquivos: {ex.Message}", "Atenção!!!",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
         }
 
         private void bt_executar_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(tb_pastapdrao.Text))
+            if (!string.IsNullOrWhiteSpace(PastaPadrao))
             {
                 ExcelProcessor ProcExcel = new ExcelProcessor();
 
-                ProcExcel.GeraResumoSocios(tb_pastapdrao.Text, "ATUAL DISTRIBUIDORA");
+                var caminhoResumo = ProcExcel.GeraResumoSocios(PastaPadrao, "ATUAL DISTRIBUIDORA");
 
+                // Abre o arquivo Excel com o aplicativo padrão associado
+                if (!string.IsNullOrEmpty(caminhoResumo))
+                {
+                    Process.Start(new ProcessStartInfo(caminhoResumo) { UseShellExecute = true });
+                }
             }
             else
             {
-                MessageBox.Show("Selecione a Pasta Padrão!!!", "Atenção!!!", 
+                MessageBox.Show("Selecione a Pasta Padrão!!!", "Atenção!!!",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
-                bt_pastapadrao.Focus();
             }
         }
 
@@ -95,7 +100,7 @@ namespace Ajusta_Planilhas
                 foreach (var planilha in ct_ListaPlanilhas.CheckedItems)
                 {
                     nomeArquivo = planilha.ToString();
-                    caminhoCompleto = Path.Combine(tb_pastapdrao.Text, nomeArquivo);
+                    caminhoCompleto = Path.Combine(PastaPadrao, nomeArquivo);
                     indice = listaArquivos.IndexOf(caminhoCompleto);
                 }
 
@@ -171,6 +176,34 @@ namespace Ajusta_Planilhas
                 lb_NovoNome.Visible = false;
                 tb_NovoNome.Visible = false;
             }
+        }
+
+        private async void VerEmpresa(int codemp)
+        {
+            using (var context = new GPContext())
+            {
+                var EmpRep = new EmpresaRepository(context);
+
+                var DadosEmp = await EmpRep.GetByIdAsync(codemp);
+                if (DadosEmp != null)
+                {
+                    PastaPadrao = DadosEmp.PastaPadrao;
+                    LogoEmp = Utilitarios.GetImage(DadosEmp.EmpresaLogo);
+                    EmpresaId = DadosEmp.EmpresaId;
+                }
+                else
+                {
+                    //Abre o Menu Principal
+                    CadEmpresa CadEmp = new CadEmpresa(0);
+                    CadEmp.ShowDialog();
+                }
+            }
+        }
+
+        private void lb_Empresa_DoubleClick(object sender, EventArgs e)
+        {
+            CadEmpresa CadEmp = new CadEmpresa(EmpresaId);
+            CadEmp.ShowDialog();
         }
     } //Final da Classe
 }

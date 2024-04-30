@@ -1,4 +1,4 @@
-﻿namespace Ajusta_Planilhas
+﻿namespace Gestao_Planilhas
 {
     partial class Home
     {
@@ -29,13 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Home));
-            tb_resultado = new TextBox();
             bt_executar = new Button();
-            label2 = new Label();
-            label1 = new Label();
-            bt_pastapadrao = new Button();
-            tb_pastapdrao = new TextBox();
-            cb_opcao = new ComboBox();
             ct_Tabs = new TabControl();
             tab_0 = new TabPage();
             tb_NovoNome = new TextBox();
@@ -44,6 +38,7 @@
             rb_Ativar = new RadioButton();
             rb_Desativar = new RadioButton();
             rb_Eliminar = new RadioButton();
+            rb_VerResumo = new RadioButton();
             rb_Renomear = new RadioButton();
             ct_ListaPlanilhas = new CheckedListBox();
             tab_1 = new TabPage();
@@ -54,24 +49,12 @@
             label6 = new Label();
             label3 = new Label();
             tab_2 = new TabPage();
+            lb_Empresa = new Label();
+            bt_fechar = new Button();
             ct_Tabs.SuspendLayout();
             tab_0.SuspendLayout();
             tab_1.SuspendLayout();
             SuspendLayout();
-            // 
-            // tb_resultado
-            // 
-            tb_resultado.BackColor = SystemColors.Control;
-            tb_resultado.BorderStyle = BorderStyle.None;
-            tb_resultado.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            tb_resultado.ForeColor = SystemColors.MenuHighlight;
-            tb_resultado.Location = new Point(12, 241);
-            tb_resultado.Name = "tb_resultado";
-            tb_resultado.ReadOnly = true;
-            tb_resultado.Size = new Size(413, 22);
-            tb_resultado.TabIndex = 14;
-            tb_resultado.Text = "Planilhas Geradas com Sucesso !!!";
-            tb_resultado.TextAlign = HorizontalAlignment.Center;
             // 
             // bt_executar
             // 
@@ -83,59 +66,15 @@
             bt_executar.UseVisualStyleBackColor = true;
             bt_executar.Click += bt_executar_Click;
             // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(12, 9);
-            label2.Name = "label2";
-            label2.Size = new Size(231, 15);
-            label2.TabIndex = 12;
-            label2.Text = "01 - Selecione a Pasta Padrão das Planilhas";
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(12, 62);
-            label1.Name = "label1";
-            label1.Size = new Size(127, 15);
-            label1.TabIndex = 11;
-            label1.Text = "02 - Escolha uma Ação";
-            // 
-            // bt_pastapadrao
-            // 
-            bt_pastapadrao.Location = new Point(391, 27);
-            bt_pastapadrao.Name = "bt_pastapadrao";
-            bt_pastapadrao.Size = new Size(34, 23);
-            bt_pastapadrao.TabIndex = 10;
-            bt_pastapadrao.Text = "...";
-            bt_pastapadrao.UseVisualStyleBackColor = true;
-            bt_pastapadrao.Click += bt_pastapadrao_Click;
-            // 
-            // tb_pastapdrao
-            // 
-            tb_pastapdrao.Location = new Point(12, 27);
-            tb_pastapdrao.Name = "tb_pastapdrao";
-            tb_pastapdrao.Size = new Size(373, 23);
-            tb_pastapdrao.TabIndex = 9;
-            // 
-            // cb_opcao
-            // 
-            cb_opcao.FormattingEnabled = true;
-            cb_opcao.Items.AddRange(new object[] { "Criar Nova Planilha", "Alterar Planilha" });
-            cb_opcao.Location = new Point(153, 58);
-            cb_opcao.Name = "cb_opcao";
-            cb_opcao.Size = new Size(272, 23);
-            cb_opcao.TabIndex = 8;
-            // 
             // ct_Tabs
             // 
             ct_Tabs.Controls.Add(tab_0);
             ct_Tabs.Controls.Add(tab_1);
             ct_Tabs.Controls.Add(tab_2);
-            ct_Tabs.Location = new Point(13, 87);
+            ct_Tabs.Location = new Point(12, 62);
             ct_Tabs.Name = "ct_Tabs";
             ct_Tabs.SelectedIndex = 0;
-            ct_Tabs.Size = new Size(413, 148);
+            ct_Tabs.Size = new Size(413, 277);
             ct_Tabs.TabIndex = 15;
             // 
             // tab_0
@@ -146,12 +85,13 @@
             tab_0.Controls.Add(rb_Ativar);
             tab_0.Controls.Add(rb_Desativar);
             tab_0.Controls.Add(rb_Eliminar);
+            tab_0.Controls.Add(rb_VerResumo);
             tab_0.Controls.Add(rb_Renomear);
             tab_0.Controls.Add(ct_ListaPlanilhas);
             tab_0.Location = new Point(4, 24);
             tab_0.Name = "tab_0";
             tab_0.Padding = new Padding(3);
-            tab_0.Size = new Size(405, 120);
+            tab_0.Size = new Size(405, 249);
             tab_0.TabIndex = 2;
             tab_0.Text = "Planilhas na Pasta";
             tab_0.UseVisualStyleBackColor = true;
@@ -159,36 +99,43 @@
             // tb_NovoNome
             // 
             tb_NovoNome.CharacterCasing = CharacterCasing.Upper;
-            tb_NovoNome.Location = new Point(306, 59);
+            tb_NovoNome.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            tb_NovoNome.Location = new Point(232, 141);
             tb_NovoNome.Name = "tb_NovoNome";
-            tb_NovoNome.Size = new Size(93, 23);
+            tb_NovoNome.Size = new Size(167, 23);
             tb_NovoNome.TabIndex = 16;
             tb_NovoNome.Visible = false;
             // 
             // lb_NovoNome
             // 
             lb_NovoNome.AutoSize = true;
-            lb_NovoNome.Location = new Point(232, 62);
+            lb_NovoNome.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lb_NovoNome.Location = new Point(232, 123);
             lb_NovoNome.Name = "lb_NovoNome";
-            lb_NovoNome.Size = new Size(72, 15);
+            lb_NovoNome.Size = new Size(74, 15);
             lb_NovoNome.TabIndex = 15;
             lb_NovoNome.Text = "Novo Nome";
             lb_NovoNome.Visible = false;
             // 
             // bt_ExecPlanilha
             // 
-            bt_ExecPlanilha.Location = new Point(270, 86);
+            bt_ExecPlanilha.BackColor = Color.SteelBlue;
+            bt_ExecPlanilha.FlatAppearance.BorderSize = 0;
+            bt_ExecPlanilha.FlatStyle = FlatStyle.Flat;
+            bt_ExecPlanilha.Font = new Font("Montserrat", 8.999999F, FontStyle.Bold);
+            bt_ExecPlanilha.ForeColor = Color.White;
+            bt_ExecPlanilha.Location = new Point(252, 190);
             bt_ExecPlanilha.Name = "bt_ExecPlanilha";
-            bt_ExecPlanilha.Size = new Size(98, 23);
+            bt_ExecPlanilha.Size = new Size(120, 45);
             bt_ExecPlanilha.TabIndex = 14;
             bt_ExecPlanilha.Text = "03 - Executar";
-            bt_ExecPlanilha.UseVisualStyleBackColor = true;
+            bt_ExecPlanilha.UseVisualStyleBackColor = false;
             bt_ExecPlanilha.Click += bt_ExecPlanilha_Click;
             // 
             // rb_Ativar
             // 
             rb_Ativar.AutoSize = true;
-            rb_Ativar.Location = new Point(316, 40);
+            rb_Ativar.Location = new Point(316, 92);
             rb_Ativar.Name = "rb_Ativar";
             rb_Ativar.Size = new Size(56, 19);
             rb_Ativar.TabIndex = 1;
@@ -199,7 +146,7 @@
             // rb_Desativar
             // 
             rb_Desativar.AutoSize = true;
-            rb_Desativar.Location = new Point(316, 15);
+            rb_Desativar.Location = new Point(316, 67);
             rb_Desativar.Name = "rb_Desativar";
             rb_Desativar.Size = new Size(73, 19);
             rb_Desativar.TabIndex = 1;
@@ -210,7 +157,7 @@
             // rb_Eliminar
             // 
             rb_Eliminar.AutoSize = true;
-            rb_Eliminar.Location = new Point(232, 40);
+            rb_Eliminar.Location = new Point(232, 92);
             rb_Eliminar.Name = "rb_Eliminar";
             rb_Eliminar.Size = new Size(68, 19);
             rb_Eliminar.TabIndex = 1;
@@ -218,10 +165,22 @@
             rb_Eliminar.Text = "Eliminar";
             rb_Eliminar.UseVisualStyleBackColor = true;
             // 
+            // rb_VerResumo
+            // 
+            rb_VerResumo.AutoSize = true;
+            rb_VerResumo.Location = new Point(269, 42);
+            rb_VerResumo.Name = "rb_VerResumo";
+            rb_VerResumo.Size = new Size(87, 19);
+            rb_VerResumo.TabIndex = 1;
+            rb_VerResumo.TabStop = true;
+            rb_VerResumo.Text = "Ver Resumo";
+            rb_VerResumo.UseVisualStyleBackColor = true;
+            rb_VerResumo.CheckedChanged += rb_Renomear_CheckedChanged;
+            // 
             // rb_Renomear
             // 
             rb_Renomear.AutoSize = true;
-            rb_Renomear.Location = new Point(232, 15);
+            rb_Renomear.Location = new Point(232, 67);
             rb_Renomear.Name = "rb_Renomear";
             rb_Renomear.Size = new Size(79, 19);
             rb_Renomear.TabIndex = 1;
@@ -236,7 +195,7 @@
             ct_ListaPlanilhas.FormattingEnabled = true;
             ct_ListaPlanilhas.Location = new Point(6, 15);
             ct_ListaPlanilhas.Name = "ct_ListaPlanilhas";
-            ct_ListaPlanilhas.Size = new Size(220, 94);
+            ct_ListaPlanilhas.Size = new Size(220, 220);
             ct_ListaPlanilhas.TabIndex = 0;
             // 
             // tab_1
@@ -251,7 +210,7 @@
             tab_1.Location = new Point(4, 24);
             tab_1.Name = "tab_1";
             tab_1.Padding = new Padding(3);
-            tab_1.Size = new Size(405, 120);
+            tab_1.Size = new Size(405, 249);
             tab_1.TabIndex = 0;
             tab_1.Text = "Criar Nova Planilha";
             tab_1.UseVisualStyleBackColor = true;
@@ -284,7 +243,7 @@
             // textBox1
             // 
             textBox1.CharacterCasing = CharacterCasing.Upper;
-            textBox1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            textBox1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             textBox1.Location = new Point(57, 18);
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(145, 23);
@@ -314,28 +273,53 @@
             tab_2.Location = new Point(4, 24);
             tab_2.Name = "tab_2";
             tab_2.Padding = new Padding(3);
-            tab_2.Size = new Size(405, 120);
+            tab_2.Size = new Size(405, 249);
             tab_2.TabIndex = 1;
             tab_2.Text = "tabPage2";
             tab_2.UseVisualStyleBackColor = true;
+            // 
+            // lb_Empresa
+            // 
+            lb_Empresa.AutoSize = true;
+            lb_Empresa.Font = new Font("Roboto Medium", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lb_Empresa.Location = new Point(12, 9);
+            lb_Empresa.Name = "lb_Empresa";
+            lb_Empresa.Size = new Size(266, 33);
+            lb_Empresa.TabIndex = 16;
+            lb_Empresa.Text = "Magazine Pantanal";
+            lb_Empresa.DoubleClick += lb_Empresa_DoubleClick;
+            // 
+            // bt_fechar
+            // 
+            bt_fechar.BackColor = Color.Transparent;
+            bt_fechar.Cursor = Cursors.Hand;
+            bt_fechar.FlatAppearance.BorderColor = Color.FromArgb(167, 165, 165);
+            bt_fechar.FlatAppearance.BorderSize = 0;
+            bt_fechar.FlatAppearance.MouseDownBackColor = Color.Transparent;
+            bt_fechar.FlatAppearance.MouseOverBackColor = Color.Transparent;
+            bt_fechar.FlatStyle = FlatStyle.Flat;
+            bt_fechar.Image = Properties.Resources.fechar_24x24;
+            bt_fechar.Location = new Point(393, 9);
+            bt_fechar.Name = "bt_fechar";
+            bt_fechar.Size = new Size(32, 32);
+            bt_fechar.TabIndex = 17;
+            bt_fechar.UseVisualStyleBackColor = false;
             // 
             // Home
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(438, 270);
+            BackColor = SystemColors.GrayText;
+            ClientSize = new Size(438, 355);
+            Controls.Add(bt_fechar);
+            Controls.Add(lb_Empresa);
             Controls.Add(ct_Tabs);
-            Controls.Add(tb_resultado);
-            Controls.Add(label2);
-            Controls.Add(label1);
-            Controls.Add(bt_pastapadrao);
-            Controls.Add(tb_pastapdrao);
-            Controls.Add(cb_opcao);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
+            FormBorderStyle = FormBorderStyle.None;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Home";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Home";
+            Load += Home_Load;
             ct_Tabs.ResumeLayout(false);
             tab_0.ResumeLayout(false);
             tab_0.PerformLayout();
@@ -346,14 +330,7 @@
         }
 
         #endregion
-
-        private TextBox tb_resultado;
         private Button bt_executar;
-        private Label label2;
-        private Label label1;
-        private Button bt_pastapadrao;
-        private TextBox tb_pastapdrao;
-        private ComboBox cb_opcao;
         private TabControl ct_Tabs;
         private TabPage tab_1;
         private Label label5;
@@ -372,5 +349,8 @@
         private RadioButton rb_Renomear;
         private TextBox tb_NovoNome;
         private Label lb_NovoNome;
+        private RadioButton rb_VerResumo;
+        private Label lb_Empresa;
+        private Button bt_fechar;
     }
 }
